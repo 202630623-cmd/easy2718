@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>랜덤 농구화 추천</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+        }
+
+        body {
+            background-color: #121212;
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            text-align: center;
+            max-width: 480px;
+            width: 100%;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            color: #ff6b00; /* 농구공 시그니처 오렌지 */
+        }
+
+        .subtitle {
+            font-size: 0.95rem;
+            color: #aaa;
+            margin-bottom: 25px;
+        }
+
+        button {
+            background-color: #ff6b00;
+            color: white;
+            border: none;
+            padding: 15px 32px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 15px rgba(255, 107, 0, 0.4);
+        }
+
+        button:hover {
+            background-color: #e05d00;
+            transform: translateY(-2px);
+        }
+
+        button:active {
+            transform: translateY(1px);
+        }
+
+        .card {
+            background-color: #1e1e1e;
+            border-radius: 20px;
+            padding: 25px;
+            margin-top: 25px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+            border: 1px solid #333;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .card.hidden {
+            display: none;
+            opacity: 0;
+            transform: translateY(15px);
+        }
+
+        .card img {
+            width: 100%;
+            height: 230px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 15px;
+        }
+
+        #shoe-name {
+            font-size: 1.4rem;
+            margin-bottom: 6px;
+        }
+
+        .brand {
+            color: #ff6b00;
+            font-weight: bold;
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+        }
+
+        .features {
+            background-color: #2a2a2a;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: left;
+        }
+
+        .features h3 {
+            font-size: 0.9rem;
+            color: #ccc;
+            margin-bottom: 6px;
+        }
+
+        .features p {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #eee;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏀 농구화 추천기 🏀</h1>
+        <p class="subtitle">버튼을 누르면 당신에게 딱 맞는 농구화를 추천해 드립니다!</p>
+        
+        <button id="recommend-btn">농구화 추천받기</button>
+
+        <div id="result-card" class="card hidden">
+            <img id="shoe-img" src="" alt="농구화 이미지">
+            <h2 id="shoe-name">농구화 이름</h2>
+            <p id="shoe-brand" class="brand">브랜드</p>
+            <div class="features">
+                <h3>주요 특징</h3>
+                <p id="shoe-desc">농구화 특징 설명이 들어가는 곳입니다.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 농구화 데이터 목록 (총 10개)
+        const shoes = [
+            {
+                name: "나이키 코비 8 프로트로",
+                brand: "Nike",
+                desc: "최상급 접지력과 가벼운 무게감을 자랑하는 로우컷 농구화입니다. 빠른 가드들에게 최고의 선택입니다.",
+                image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                name: "나이키 에어 조던 38",
+                brand: "Jordan",
+                desc: "뛰어난 쿠셔닝과 안정적인 발목 지지력을 제공합니다. 줌 에어 쿠션이 탑재되어 리바운드 후 착지가 부드럽습니다.",
+                image: "https://images.unsplash.com/photo-1552346154-21d32810aba3?auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                name: "아디다스 하든 볼륨 7",
+                brand: "Adidas",
+                desc: "독특한 디자인과 강력한 측면 접지력이 특징입니다. 감속 및 방향 전환이 많은 플레이어에게 적합합니다.",
+                image: "https://images.unsplash.com/photo-1584735935682-2f2b69dff9d2?auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                name: "언더아머 커리 11",
+                brand: "Under Armour",
+                desc: "플로우(Flow) 폼 쿠셔닝이 적용되어 미끄러짐 없는 접지력을 보여줍니다. 3점 슈터에게 최적화되어 있습니다.",
+                image: "https://images.unsplash.com/photo-1608256246200-53e635b5b65f?auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                name: "나이키 GT 컷 3",
+                brand: "Nike",
+                desc: "줌엑스(ZoomX) 폼이 들어가 반응성이 매우 뛰어납니다. 폭발적인 첫 걸음과 순발력을 키워주는 농구화입니다.",
+                image: "https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?auto=format&fit=crop&w=600&q=80"
+            },
+            // 추가된 최근 최신 인기 농구화 5종
+            {
+                name: "나이키 자 모란트 2 (Ja 2)",
+                brand: "Nike",
+                desc: "자 모란트의 폭발적인 플레이 스타일을 구현한 모델로, 우수한 접지력과 빠른 반응성의 경량 로우컷 농구화입니다.",
+                image: "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                name: "아디다스 앤서니 에드워즈 1 (AE 1)",
+                brand: "Adidas",
+                desc: "미래지향적인 독특한 디자인과 반발력이 우수하여 코트 위에서 높은 안정성과 인기를 얻고 있는 시그니처 모델입니다.",
+                image: "https://images.unsplash.com/photo-1579338559194-a162d19bf842?auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                name: "나이키 사브리나 2",
+                brand: "Nike",
+                desc: "가벼운 무게와 극상의 칼접지력으로 남녀 가드 선수들 사이에서 트렌드로 자리잡은 퍼포먼스 농구화입니다.",
+                image: "https://images.unsplash.com/photo-1511556532299-8f662fc26c06?auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                name: "나이키 르브론 22 (LeBron 22)",
+                brand: "Nike",
+                desc: "강력한 파워 플레이어를 위한 플래그십 농구화로, 두터운 쿠셔닝과 뛰어난 발목 지지력으로 충격을 완벽히 흡수합니다.",
+                image: "https://images.unsplash.com/photo-1512374382149-233c42b6a83b?auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                name: "조던 루카 3 (Luka 3)",
+                brand: "Jordan",
+                desc: "루카 돈치치의 템포 조절과 스텝백 기술에 최적화되어 측면 제어력과 슛 밸런스 유지 능력이 뛰어납니다.",
+                image: "https://images.unsplash.com/photo-1514989940723-e8e51635b782?auto=format&fit=crop&w=600&q=80"
+            }
+        ];
+
+        const recommendBtn = document.getElementById('recommend-btn');
+        const resultCard = document.getElementById('result-card');
+        const shoeImg = document.getElementById('shoe-img');
+        const shoeName = document.getElementById('shoe-name');
+        const shoeBrand = document.getElementById('shoe-brand');
+        const shoeDesc = document.getElementById('shoe-desc');
+
+        recommendBtn.addEventListener('click', () => {
+            resultCard.classList.add('hidden');
+
+            setTimeout(() => {
+                const randomIndex = Math.floor(Math.random() * shoes.length);
+                const selectedShoe = shoes[randomIndex];
+
+                shoeImg.src = selectedShoe.image;
+                shoeName.textContent = selectedShoe.name;
+                shoeBrand.textContent = selectedShoe.brand;
+                shoeDesc.textContent = selectedShoe.desc;
+
+                resultCard.classList.remove('hidden');
+            }, 150);
+        });
+    </script>
+</body>
+</html>
