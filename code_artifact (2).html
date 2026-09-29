@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="ko" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>이지배출 (easy배출) - AI 스마트 분리배출 가이드</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            200: '#bbf7d0',
+                            300: '#86efac',
+                            400: '#4ade80',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            800: '#166534',
+                            900: '#14532d',
+                        },
+                        eco: {
+                            mint: '#e6f7f0',
+                            softBg: '#f8faf9',
+                            darkText: '#1c2d27',
+                            muted: '#526e64'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Pretendard', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+        body {
+            font-family: 'Pretendard', sans-serif;
+            background-color: #f8faf9;
+            color: #1c2d27;
+        }
+        .scan-line {
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #22c55e, transparent);
+            position: absolute;
+            animation: scan 2s infinite ease-in-out;
+        }
+        @keyframes scan {
+            0% { top: 0%; opacity: 0.2; }
+            50% { top: 95%; opacity: 1; }
+            100% { top: 0%; opacity: 0.2; }
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(220, 252, 231, 0.6);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between antialiased selection:bg-brand-200 selection:text-brand-900">
+
+    <!-- Navigation Header -->
+    <header class="sticky top-0 z-40 w-full glass-card border-b border-brand-100/60 transition-all duration-200">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <!-- Logo -->
+            <a href="#" class="flex items-center gap-2 group">
+                <div class="w-10 h-10 rounded-2xl bg-brand-500 flex items-center justify-center text-white shadow-md shadow-brand-500/20 group-hover:scale-105 transition-transform">
+                    <i class="fa-solid fa-recycle text-xl"></i>
+                </div>
+                <div>
+                    <span class="text-xl font-bold tracking-tight text-brand-900">이지배출</span>
+                    <span class="text-xs font-semibold text-brand-600 block -mt-1">easy배출</span>
+                </div>
+            </a>
+
+            <!-- Nav Items -->
+            <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-eco-darkText">
+                <a href="#ai-scanner" class="hover:text-brand-600 transition-colors flex items-center gap-1.5"><i class="fa-solid fa-camera text-brand-500"></i> AI 사진 분석</a>
+                <a href="#search-section" class="hover:text-brand-600 transition-colors flex items-center gap-1.5"><i class="fa-solid fa-magnifying-glass text-brand-500"></i> 품목 검색</a>
+                <a href="#regional-section" class="hover:text-brand-600 transition-colors flex items-center gap-1.5"><i class="fa-solid fa-location-dot text-brand-500"></i> 우리동네 배출안내</a>
+                <a href="#quiz-section" class="hover:text-brand-600 transition-colors flex items-center gap-1.5"><i class="fa-solid fa-lightbulb text-brand-500"></i> 퀴즈 & 팁</a>
+            </nav>
+
+            <!-- Quick Action Button -->
+            <div class="flex items-center gap-2">
+                <button onclick="scrollToScanner()" class="px-4 py-2 text-sm font-semibold text-white bg-brand-600 hover:bg-brand-700 active:scale-95 transition-all rounded-xl shadow-sm shadow-brand-600/30 flex items-center gap-2">
+                    <i class="fa-solid fa-camera"></i>
+                    <span>바로 촬영하기</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-grow max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
+
+        <!-- Hero Section -->
+        <section class="text-center max-w-3xl mx-auto space-y-4 pt-4">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-brand-100 text-brand-800 border border-brand-200">
+                <i class="fa-solid fa-wand-magic-sparkles"></i> AI 인공지능 쓰레기 진단 서비스
+            </span>
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-eco-darkText leading-tight">
+                어려운 분리배출,<br class="sm:hidden"> <span class="text-brand-600 underline decoration-brand-300 underline-offset-4">사진 한 장</span>으로 쉽고 편하게!
+            </h1>
+            <p class="text-base sm:text-lg text-eco-muted leading-relaxed">
+                헤갈리는 쓰레기 사진을 찍어 올려보세요. AI가 품목 분류부터 세척/배출 방법, 오염도별 맞춤 처리 요령까지 1초 만에 스마트하게 알려드립니다.
+            </p>
+        </section>
+
+        <!-- AI Photo Upload & Scan Area -->
+        <section id="ai-scanner" class="scroll-mt-24">
+            <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-xl shadow-brand-900/5 border border-brand-100">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                    
+                    <!-- Upload Left Column -->
+                    <div class="lg:col-span-6 space-y-4">
+                        <div class="flex items-center justify-between">
+                            <h2 class="text-lg font-bold text-eco-darkText flex items-center gap-2">
+                                <i class="fa-solid fa-image text-brand-600"></i>
+                                쓰레기 사진 올리기
+                            </h2>
+                            <button onclick="openGuideModal()" class="text-xs font-medium text-brand-600 hover:text-brand-700 underline flex items-center gap-1">
+                                <i class="fa-regular fa-circle-question"></i> 촬영 팁
+                            </button>
+                        </div>
+
+                        <!-- Dropzone / Camera Area -->
+                        <div id="drop-zone" class="relative border-2 border-dashed border-brand-200 hover:border-brand-500 bg-brand-50/50 hover:bg-brand-50 rounded-2xl p-6 text-center cursor-pointer transition-all duration-200 group flex flex-col items-center justify-center min-h-[280px]">
+                            <input type="file" id="file-input" accept="image/*" class="hidden" onchange="handleFileSelect(event)">
+                            
+                            <!-- Initial Upload UI -->
+                            <div id="upload-placeholder" class="space-y-3">
+                                <div class="w-16 h-16 rounded-2xl bg-white text-brand-600 shadow-md flex items-center justify-center mx-auto group-hover:scale-110 transition-transform">
+                                    <i class="fa-solid fa-cloud-arrow-up text-2xl"></i>
+                                </div>
+                                <div>
+                                    <p class="text-base font-semibold text-eco-darkText">사진을 이곳에 끌어놓거나 클릭하세요</p>
+                                    <p class="text-xs text-eco-muted mt-1">카메라 촬영 또는 JPG, PNG 이미지 (최대 10MB)</p>
+                                </div>
+                                <button type="button" onclick="document.getElementById('file-input').click()" class="px-4 py-2 text-xs font-semibold text-brand-700 bg-brand-100 hover:bg-brand-200 rounded-xl transition-colors inline-flex items-center gap-1.5">
+                                    <i class="fa-solid fa-camera"></i> 사진 선택 및 촬영
+                                </button>
+                            </div>
+
+                            <!-- Image Preview UI (Hidden initially) -->
+                            <div id="image-preview-container" class="hidden absolute inset-0 w-full h-full rounded-2xl overflow-hidden bg-slate-900">
+                                <img id="uploaded-image" class="w-full h-full object-contain" src="" alt="업로드 이미지">
+                                <div id="scanner-line" class="hidden scan-line"></div>
+                                <button onclick="resetUpload(event)" class="absolute top-3 right-3 bg-black/60 hover:bg-black/80 text-white rounded-full p-2 text-xs transition-colors backdrop-blur-sm z-10" title="사진 다시 선택">
+                                    <i class="fa-solid fa-xmark text-sm w-4 h-4 flex items-center justify-center"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Quick Sample Preset Section -->
+                        <div class="space-y-2 pt-2">
+                            <p class="text-xs font-semibold text-eco-muted flex items-center gap-1">
+                                <i class="fa-solid fa-bolt text-amber-500"></i> 예시 이미지로 테스트해보기:
+                            </p>
+                            <div class="grid grid-cols-5 gap-2">
+                                <button onclick="loadPreset('delivery')" class="text-center p-2 rounded-xl bg-slate-100 hover:bg-brand-100 border border-slate-200 hover:border-brand-300 transition-all text-xs font-medium text-eco-darkText">
+                                    <span class="block text-base mb-1">🍱</span> 배달용기
+                                </button>
+                                <button onclick="loadPreset('pet')" class="text-center p-2 rounded-xl bg-slate-100 hover:bg-brand-100 border border-slate-200 hover:border-brand-300 transition-all text-xs font-medium text-eco-darkText">
+                                    <span class="block text-base mb-1">🥤</span> 페트병
+                                </button>
+                                <button onclick="loadPreset('box')" class="text-center p-2 rounded-xl bg-slate-100 hover:bg-brand-100 border border-slate-200 hover:border-brand-300 transition-all text-xs font-medium text-eco-darkText">
+                                    <span class="block text-base mb-1">📦</span> 택배상자
+                                </button>
+                                <button onclick="loadPreset('glass')" class="text-center p-2 rounded-xl bg-slate-100 hover:bg-brand-100 border border-slate-200 hover:border-brand-300 transition-all text-xs font-medium text-eco-darkText">
+                                    <span class="block text-base mb-1">🥛</span> 깨진유리
+                                </button>
+                                <button onclick="loadPreset('vinyl')" class="text-center p-2 rounded-xl bg-slate-100 hover:bg-brand-100 border border-slate-200 hover:border-brand-300 transition-all text-xs font-medium text-eco-darkText">
+                                    <span class="block text-base mb-1">🍟</span> 비닐과자
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Scan Result Right Column -->
+                    <div class="lg:col-span-6 bg-eco-softBg rounded-2xl p-6 border border-brand-100/80 min-h-[380px] flex flex-col justify-center relative">
+                        
+                        <!-- Initial Placeholder Result state -->
+                        <div id="result-placeholder" class="text-center space-y-3 py-12">
+                            <div class="w-14 h-14 rounded-full bg-brand-100 text-brand-600 flex items-center justify-center mx-auto text-xl">
+                                <i class="fa-solid fa-sparkles"></i>
+                            </div>
+                            <h3 class="text-lg font-bold text-eco-darkText">AI 분석 대기 중</h3>
+                            <p class="text-sm text-eco-muted max-w-xs mx-auto">
+                                좌측에서 사진을 올려주시거나 테스트 예시 버튼을 누르면 이곳에 세부 배출 가이드가 표시됩니다.
+                            </p>
+                        </div>
+
+                        <!-- Scanning State (Hidden) -->
+                        <div id="result-loading" class="hidden text-center space-y-4 py-12">
+                            <div class="inline-block animate-spin rounded-full h-10 w-10 border-4 border-brand-200 border-t-brand-600"></div>
+                            <p class="text-base font-semibold text-eco-darkText">AI가 이미지를 세밀하게 분석하고 있습니다...</p>
+                            <p class="text-xs text-eco-muted">재질 식별 ➔ 오염도 파악 ➔ 분류 기준 적용 중</p>
+                        </div>
+
+                        <!-- Active Result Display (Hidden) -->
+                        <div id="result-content" class="hidden space-y-5">
+                            <!-- Category Badge Header -->
+                            <div class="flex items-start justify-between border-b border-slate-200/80 pb-4">
+                                <div>
+                                    <span id="res-badge" class="px-2.5 py-1 rounded-md text-xs font-bold uppercase tracking-wider bg-brand-100 text-brand-800">
+                                        분류 결과
+                                    </span>
+                                    <h3 id="res-title" class="text-2xl font-bold text-eco-darkText mt-1">투명 페트병</h3>
+                                </div>
+                                <div id="res-recyclable-tag" class="text-right">
+                                    <!-- Dynamic Tag -->
+                                </div>
+                            </div>
+
+                            <!-- Contamination Status Indicator -->
+                            <div id="res-contamination-box" class="p-3.5 rounded-xl bg-amber-50 border border-amber-200/70 text-xs text-amber-900 flex items-start gap-2.5">
+                                <i class="fa-solid fa-triangle-exclamation text-amber-600 text-base mt-0.5"></i>
+                                <div>
+                                    <span class="font-bold block" id="res-contamination-title">오염도 진단 결과</span>
+                                    <span id="res-contamination-desc" class="text-amber-800">빨간 국물 자국 오염이 감지되었습니다. 배출 전 세척이 필수입니다.</span>
+                                </div>
+                            </div>
+
+                            <!-- Step-by-Step Instructions -->
+                            <div class="space-y-2">
+                                <h4 class="text-xs font-bold text-eco-muted uppercase tracking-wider flex items-center gap-1.5">
+                                    <i class="fa-solid fa-list-check text-brand-600"></i> 맞춤형 배출 단계 가이드
+                                </h4>
+                                <ol id="res-steps" class="space-y-2 text-sm text-eco-darkText font-medium">
+                                    <!-- Dynamic step list -->
+                                </ol>
+                            </div>
+
+                            <!-- Caution & Tips -->
+                            <div class="bg-white rounded-xl p-3.5 border border-brand-100 text-xs space-y-1">
+                                <p class="font-bold text-brand-800 flex items-center gap-1">
+                                    <i class="fa-solid fa-circle-info"></i> 핵심 배출 꿀팁
+                                </p>
+                                <p id="res-tip" class="text-eco-muted">라벨 비닐은 떼어서 비닐류로 따로 버리고, 용기 본체는 깨끗이 행궈 압착 후 뚜껑을 닫아 배출하세요.</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Search & FAQ Section -->
+        <section id="search-section" class="scroll-mt-24 space-y-6">
+            <div class="text-center max-w-xl mx-auto space-y-2">
+                <h2 class="text-2xl sm:text-3xl font-bold text-eco-darkText">알쏭달쏭 어려운 품목 검색</h2>
+                <p class="text-sm text-eco-muted">"이것도 분리수거 되나?" 싶은 품목명을 검색해 보세요.</p>
+            </div>
+
+            <!-- Search Bar -->
+            <div class="max-w-2xl mx-auto space-y-3">
+                <div class="relative">
+                    <input type="text" id="item-search-input" onkeyup="filterItems()" placeholder="예: 영수증, 약품, 아이스팩, 깨진 유리..." class="w-full px-5 py-4 pl-12 pr-10 text-base bg-white border-2 border-brand-200 focus:border-brand-500 focus:outline-none rounded-2xl shadow-sm transition-all">
+                    <i class="fa-solid fa-magnifying-glass absolute left-4.5 top-1/2 -translate-y-1/2 text-brand-500 text-lg"></i>
+                    <button onclick="clearSearch()" id="search-clear-btn" class="hidden absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-sm">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+
+                <!-- Popular Search Tags -->
+                <div class="flex flex-wrap items-center gap-1.5 text-xs">
+                    <span class="text-eco-muted font-semibold mr-1">인기 검색:</span>
+                    <button onclick="quickSearch('영수증')" class="px-2.5 py-1 bg-white hover:bg-brand-100 border border-brand-200 text-eco-darkText rounded-full transition-colors">📄 영수증</button>
+                    <button onclick="quickSearch('아이스팩')" class="px-2.5 py-1 bg-white hover:bg-brand-100 border border-brand-200 text-eco-darkText rounded-full transition-colors">🧊 아이스팩</button>
+                    <button onclick="quickSearch('깨진 유리')" class="px-2.5 py-1 bg-white hover:bg-brand-100 border border-brand-200 text-eco-darkText rounded-full transition-colors">🥛 깨진 유리</button>
+                    <button onclick="quickSearch('약품')" class="px-2.5 py-1 bg-white hover:bg-brand-100 border border-brand-200 text-eco-darkText rounded-full transition-colors">💊 폐의약품</button>
+                    <button onclick="quickSearch('칫솔')" class="px-2.5 py-1 bg-white hover:bg-brand-100 border border-brand-200 text-eco-darkText rounded-full transition-colors">🪥 칫솔</button>
+                </div>
+            </div>
+
+            <!-- Items Grid -->
+            <div id="items-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <!-- Dynamically Populated JS Items -->
+            </div>
+        </section>
+
+        <!-- Regional Disposal Info Section -->
+        <section id="regional-section" class="scroll-mt-24 bg-white rounded-3xl p-6 sm:p-8 shadow-md border border-brand-100 space-y-6">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-100 pb-6">
+                <div>
+                    <span class="text-xs font-bold text-brand-600 uppercase tracking-wider">지역 맞춤 서비스</span>
+                    <h2 class="text-2xl font-bold text-eco-darkText mt-0.5">우리 동네 배출 요일 및 종량제 안내</h2>
+                    <p class="text-xs text-eco-muted mt-1">지자체마다 배출 요일 및 방법이 다릅니다. 주민 등록 지역을 선택해 보세요.</p>
+                </div>
+
+                <!-- Region Select Dropdown -->
+                <div class="w-full md:w-64">
+                    <label for="region-select" class="block text-xs font-semibold text-eco-muted mb-1">지역 선택</label>
+                    <select id="region-select" onchange="updateRegionalInfo()" class="w-full bg-slate-50 border border-slate-200 text-eco-darkText font-medium text-sm rounded-xl p-3 focus:outline-none focus:border-brand-500">
+                        <option value="mapo">서울시 마포구</option>
+                        <option value="gangnam">서울시 강남구</option>
+                        <option value="seongnam">경기도 성남시</option>
+                        <option value="busan_haeundae">부산시 해운대구</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Regional Info Display -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                
+                <!-- Collection Schedule Box -->
+                <div class="bg-eco-softBg p-5 rounded-2xl border border-brand-100/80 space-y-3">
+                    <div class="flex items-center gap-2 text-brand-700 font-bold text-sm">
+                        <i class="fa-solid fa-calendar-days text-base"></i>
+                        <span>배출 요일 일정</span>
+                    </div>
+                    <ul id="schedule-list" class="space-y-2 text-xs">
+                        <!-- Dynamic list -->
+                    </ul>
+                </div>
+
+                <!-- Bag Prices Box -->
+                <div class="bg-eco-softBg p-5 rounded-2xl border border-brand-100/80 space-y-3">
+                    <div class="flex items-center gap-2 text-brand-700 font-bold text-sm">
+                        <i class="fa-solid fa-sack-dollar text-base"></i>
+                        <span>종량제 봉투 가격 안내</span>
+                    </div>
+                    <div id="bag-price-box" class="space-y-2 text-xs text-eco-darkText">
+                        <!-- Dynamic price table -->
+                    </div>
+                </div>
+
+                <!-- Large Waste Declaration Box -->
+                <div class="bg-brand-50 p-5 rounded-2xl border border-brand-200 flex flex-col justify-between space-y-3">
+                    <div>
+                        <div class="flex items-center gap-2 text-brand-800 font-bold text-sm mb-2">
+                            <i class="fa-solid fa-couch text-base"></i>
+                            <span>대형 폐기물 신고 및 수거</span>
+                        </div>
+                        <p id="large-waste-desc" class="text-xs text-brand-900 leading-relaxed">
+                            가구, 가전제품, 이불 등 규격 봉투에 담기 어려운 쓰레기는 지자체 신고 후 필증을 부착해 배출해야 합니다.
+                        </p>
+                    </div>
+                    <a id="large-waste-link" href="#" target="_blank" class="w-full text-center py-2.5 px-4 bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs rounded-xl shadow-sm transition-colors flex items-center justify-center gap-1.5">
+                        <span>해당 지자체 신고 페이지 바로가기</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                    </a>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Daily Eco Quiz & Tip Card -->
+        <section id="quiz-section" class="scroll-mt-24 grid grid-cols-1 lg:grid-cols-12 gap-6">
+            
+            <!-- Quiz Card -->
+            <div class="lg:col-span-7 bg-white rounded-3xl p-6 shadow-md border border-brand-100 space-y-4">
+                <div class="flex items-center justify-between">
+                    <span class="px-2.5 py-1 rounded-full bg-amber-100 text-amber-800 font-bold text-xs flex items-center gap-1">
+                        <i class="fa-solid fa-lightbulb"></i> 오늘의 분리배출 퀴즈
+                    </span>
+                    <span class="text-xs font-semibold text-brand-600">포인트 +10P</span>
+                </div>
+
+                <div>
+                    <h3 id="quiz-question" class="text-lg font-bold text-eco-darkText">
+                        Q. 영수증이나 택배 운송장은 종이류로 재활용 분리수거하면 될까요?
+                    </h3>
+                    <p class="text-xs text-eco-muted mt-1">자주 틀리는 상식! 정답을 맞혀보세요.</p>
+                </div>
+
+                <div id="quiz-options" class="grid grid-cols-2 gap-3 pt-2">
+                    <button onclick="checkQuizAnswer(true)" class="p-3.5 bg-slate-50 hover:bg-brand-50 border border-slate-200 hover:border-brand-300 rounded-2xl font-bold text-sm text-eco-darkText transition-all flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-circle-check text-brand-600"></i> 예 (재활용 가능)
+                    </button>
+                    <button onclick="checkQuizAnswer(false)" class="p-3.5 bg-slate-50 hover:bg-red-50 border border-slate-200 hover:border-red-300 rounded-2xl font-bold text-sm text-eco-darkText transition-all flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-circle-xmark text-red-500"></i> 아니오 (일반 쓰레기)
+                    </button>
+                </div>
+
+                <!-- Quiz Answer Result Alert -->
+                <div id="quiz-result" class="hidden p-4 rounded-2xl text-xs space-y-1">
+                    <!-- Dynamic result text -->
+                </div>
+            </div>
+
+            <!-- Quick Tips Section -->
+            <div class="lg:col-span-5 bg-gradient-to-br from-brand-600 to-brand-800 rounded-3xl p-6 text-white space-y-4 flex flex-col justify-between shadow-lg">
+                <div class="space-y-3">
+                    <span class="inline-block px-2.5 py-0.5 rounded-full bg-white/20 text-white font-semibold text-xs backdrop-blur-sm">
+                        🌿 올바른 배출 4원칙
+                    </span>
+                    <h3 class="text-xl font-bold">비우고, 헹구고,<br>분리하고, 섞지 않는다!</h3>
+                    <p class="text-xs text-brand-100 leading-relaxed">
+                        재활용품에 이물질이나 음식물이 묻어있으면 전체가 쓰레기로 매립 또는 상각 처리됩니다. 조금만 신경 쓰면 환경 보호에 큰 힘이 됩니다.
+                    </p>
+                </div>
+                <div class="pt-4 border-t border-white/10 flex items-center justify-between text-xs text-brand-200">
+                    <span>이지배출과 함께하는 제로웨이스트</span>
+                    <i class="fa-solid fa-leaf text-lg"></i>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Smart Contamination Question Modal -->
+    <div id="contamination-modal" class="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl space-y-5 animate-in fade-in zoom-in duration-200">
+            <div class="text-center space-y-2">
+                <div class="w-12 h-12 bg-amber-100 text-amber-600 rounded-2xl flex items-center justify-center mx-auto text-xl">
+                    <i class="fa-solid fa-droplet-slash"></i>
+                </div>
+                <h3 class="text-lg font-bold text-eco-darkText">스마트 오염도 체크</h3>
+                <p class="text-xs text-eco-muted leading-relaxed">
+                    AI가 사진에서 오염 가능성을 감지했습니다.<br>
+                    <strong class="text-eco-darkText">이 쓰레기의 오염이나 양념이 물로 씻겨 지나요?</strong>
+                </p>
+            </div>
+
+            <div class="space-y-2">
+                <button onclick="submitContaminationChoice('cleanable')" class="w-full py-3 px-4 bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs rounded-xl transition-colors flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-hand-holding-droplet"></i>
+                    <span>네, 물로 깨끗이 씻을 수 있습니다</span>
+                </button>
+                <button onclick="submitContaminationChoice('uncleanable')" class="w-full py-3 px-4 bg-amber-100 hover:bg-amber-200 text-amber-900 font-bold text-xs rounded-xl transition-colors flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-ban"></i>
+                    <span>아니오, 기름/양념으로 세척 불가능합니다</span>
+                </button>
+                <button onclick="submitContaminationChoice('already_clean')" class="w-full py-2.5 px-4 bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium text-xs rounded-xl transition-colors">
+                    이미 완전히 깨끗한 상태입니다
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Camera / Photo Guide Modal -->
+    <div id="guide-modal" class="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                <h3 class="text-base font-bold text-eco-darkText flex items-center gap-2">
+                    <i class="fa-solid fa-camera-retro text-brand-600"></i> AI 인식률 높이는 촬영 팁
+                </h3>
+                <button onclick="closeGuideModal()" class="text-slate-400 hover:text-slate-600 text-sm">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            
+            <ul class="space-y-3 text-xs text-eco-darkText">
+                <li class="flex items-start gap-2.5">
+                    <span class="w-5 h-5 rounded-full bg-brand-100 text-brand-700 flex items-center justify-center font-bold text-[10px] shrink-0 mt-0.5">1</span>
+                    <span><strong>상표 마크나 재활용 표시</strong>가 잘 보이도록 정면에서 촬영해 주세요.</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                    <span class="w-5 h-5 rounded-full bg-brand-100 text-brand-700 flex items-center justify-center font-bold text-[10px] shrink-0 mt-0.5">2</span>
+                    <span>용기 내부의 <strong>오염 상태나 내용물 잔여 여부</strong>가 보이도록 찍으면 오염도 진단이 더욱 정확해집니다.</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                    <span class="w-5 h-5 rounded-full bg-brand-100 text-brand-700 flex items-center justify-center font-bold text-[10px] shrink-0 mt-0.5">3</span>
+                    <span>어두운 곳보다는 밝은 조명 아래 단일 물체 위주로 촬영해 주세요.</span>
+                </li>
+            </ul>
+
+            <button onclick="closeGuideModal()" class="w-full py-2.5 bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs rounded-xl transition-colors mt-2">
+                확인했습니다
+            </button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-brand-100/80 mt-16">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col md:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-2">
+                <div class="w-7 h-7 rounded-lg bg-brand-500 text-white flex items-center justify-center text-sm font-bold">
+                    <i class="fa-solid fa-recycle"></i>
+                </div>
+                <span class="font-bold text-sm text-eco-darkText">이지배출 (easy배출)</span>
+                <span class="text-xs text-eco-muted">| 올바른 분리배출 문화 만들기</span>
+            </div>
+            <p class="text-xs text-eco-muted text-center md:text-right">
+                © 2026 이지배출 (easy배출). All rights reserved. <br class="sm:hidden">
+                본 서비스의 배출 정보는 환경부 분리배출 가이드라인을 준수합니다.
+            </p>
+        </div>
+    </footer>
+
+    <!-- Application Logic Script -->
+    <script>
+        // Preset items dataset
+        const presets = {
+            delivery: {
+                title: "배달음식 플라스틱 용기",
+                badge: "플라스틱류",
+                recyclable: "conditional",
+                askContamination: true,
+                cleanableSteps: [
+                    "1. 남아있는 음식물 잔재를 완벽히 비웁니다.",
+                    "2. 따뜻한 물과 주방세제로 빨간 기름때를 세척합니다.",
+                    "3. 물기를 말린 후 플라스틱 수거함으로 배출합니다."
+                ],
+                uncleanableSteps: [
+                    "1. 양념 오염이 착색되어 세척되지 않는 용기는 재활용이 불가능합니다.",
+                    "2. 이물질이 묻은 채로 종량제 봉투(일반쓰레기)에 버려주세요.",
+                    "3. 라벨 스티커는 떼어서 비닐류로 따로 배출합니다."
+                ],
+                cleanableContaminationDesc: "양념 오염 감지. 세척 시 플라스틱 재활용 가능합니다.",
+                uncleanableContaminationDesc: "세척 불가한 심한 착색 오염. 일반쓰레기 배출 대상입니다.",
+                tip: "음식물 기름때가 많이 밴 플라스틱은 재활용 공정에서 원료 품질을 떨어뜨리므로 세척이 핵심입니다."
+            },
+            pet: {
+                title: "투명 페트병 (음료수/생수)",
+                badge: "투명 페트",
+                recyclable: "yes",
+                askContamination: false,
+                steps: [
+                    "1. 내용물을 완전히 비우고 물로 한번 헹굽니다.",
+                    "2. 비닐 라벨을 떼어내어 비닐류 수거함에 버립니다.",
+                    "3. 뚜껑을 닫거나 찌그러뜨려 압착 후 투명 페트 전용함에 배출합니다."
+                ],
+                contaminationDesc: "오염 없음 (깨끗함). 투명 페트병 전용 배출 가능.",
+                tip: "유색 페트병이나 양념류 병은 일반 플라스틱으로, 음료 생수용 투명 페트병은 꼭 전용 수거함에 분리하세요."
+            },
+            box: {
+                title: "택배 종이 상자",
+                badge: "종이류",
+                recyclable: "yes",
+                askContamination: false,
+                steps: [
+                    "1. 상자에 붙어있는 테이프와 운송장 스티커를 깨끗이 제거합니다.",
+                    "2. 상자를 납작하게 펼쳐 접습니다.",
+                    "3. 끈으로 묶거나 차곡차곡 차개어 종이류로 배출합니다."
+                ],
+                contaminationDesc: "오염 없음. 테이프 제거 후 종이류 배출.",
+                tip: "비닐 코팅된 상자나 물에 젖은 종이, 송장 스티커는 재활용이 되지 않으니 일반 쓰레기로 버려야 합니다."
+            },
+            glass: {
+                title: "깨진 유리제품 / 유리 그릇",
+                badge: "일반쓰레기",
+                recyclable: "no",
+                askContamination: false,
+                steps: [
+                    "1. 깨진 유리는 재활용 병류로 버릴 수 없습니다.",
+                    "2. 수거원 신체 부상 방지를 위해 신문지나 두꺼운 종이로 여러 번 감쌉니다.",
+                    "3. 불연성 종량제 마대(특수 마대)나 일반 종량제 봉투에 넣어 배출합니다."
+                ],
+                contaminationDesc: "파손 품목. 재활용 불가 및 안전 배출 필요.",
+                tip: "음료수병/잼병 등 깨지지 않은 거울 이외의 유리병만 세척 후 유리병 수거함에 배출 가능합니다."
+            },
+            vinyl: {
+                title: "과자 봉지 / 라면 비닐",
+                badge: "비닐류",
+                recyclable: "yes",
+                askContamination: true,
+                cleanableSteps: [
+                    "1. 비닐 내부의 과자 부스러기를 털어냅니다.",
+                    "2. 물로 헹궈 부스러기나 기름기를 없애고 말립니다.",
+                    "3. 딱지 모양으로 묶지 말고 잘 펼쳐서 비닐류 수거함에 버립니다."
+                ],
+                uncleanableSteps: [
+                    "1. 음식물이 지워지지 않거나 이물질이 많이 묻은 비닐은 재활용 불가합니다.",
+                    "2. 종량제 봉투(일반쓰레기)에 담아 배출해 주세요."
+                ],
+                cleanableContaminationDesc: "부스러기 및 기름 잔여. 세척 후 비닐류 배출 가능.",
+                uncleanableContaminationDesc: "오염도가 심해 비닐 재활용 불가. 일반쓰레기 처리.",
+                tip: "비닐을 딱지로 접어서 버리면 선별장에서 부피가 작아 일반쓰레기로 버려질 수 있으니 펼쳐 버리세요."
+            }
+        };
+
+        // Tricky items dataset for search
+        const trickyItems = [
+            { name: "영수증 (감열지)", category: "일반쓰레기", desc: "혼합 재질 및 약품 처리되어 재활용 불가능. 종량제 봉투 배출.", icon: "📄" },
+            { name: "아이스팩 (젤 타입)", category: "일반쓰레기 / 전용수거함", desc: "젤 타입은 종량제 봉투에 버리거나 동주민센터 전용 수거함 배출. 물 타입은 물을 버리고 비닐로 배출.", icon: "🧊" },
+            { name: "깨진 유리 / 거울", category: "불연성 종량제 / 일반쓰레기", desc: "신문지로 싸서 안전하게 종량제 봉투 또는 불연성 마대에 배출.", icon: "🥛" },
+            { name: "폐의약품 (알약/물약)", category: "폐의약품 전용 수거함", desc: "싱크대나 변기에 버리면 수질 오염. 약국 또는 보건소 수거함에 배출.", icon: "💊" },
+            { name: "칫솔 / 면도기", category: "일반쓰레기", desc: "고무, 플라스틱 등 복합 재질로 재활용 불가. 종량제 봉투 배출.", icon: "🪥" },
+            { name: "코팅된 전단지 / 종이컵", category: "일반쓰레기", desc: "비닐 코팅 처리된 종이는 재활용 불가. 종량제 봉투 배출.", icon: "🗞️" },
+            { name: "남은 치킨 뼈 / 조개 껍데기", category: "일반쓰레기", desc: "동물이 먹을 수 없는 단단한 뼈/껍데기는 음식물이 아닌 일반쓰레기.", icon: "🍗" },
+            { name: "고무장갑 / 실리콘 용기", category: "일반쓰레기", desc: "플라스틱이 아니므로 재활용 불가능. 종량제 봉투 배출.", icon: "🧤" },
+            { name: "보조배터리 / 건전지", category: "폐건전지 수거함", desc: "폭발 위험이 있으므로 동주민센터나 아파트 전용 수거함에 배출.", icon: "🔋" }
+        ];
+
+        // Regional Info Data
+        const regionalData = {
+            mapo: {
+                schedules: [
+                    { day: "월 / 수 / 금", items: "투명페트, 플라스틱, 종이, 캔" },
+                    { day: "화 / 목 / 일", items: "비닐류, 스티로폼, 유리병" },
+                    { day: "토요일", items: "배출 금지 (수거 휴무)" }
+                ],
+                prices: [
+                    { size: "10 리터", price: "250원" },
+                    { size: "20 리터", price: "490원" },
+                    { size: "50 리터", price: "1,250원" }
+                ],
+                link: "https://www.mapo.go.kr"
+            },
+            gangnam: {
+                schedules: [
+                    { day: "월 / 수 / 금", items: "비닐류, 투명페트병" },
+                    { day: "화 / 목 / 일", items: "플라스틱, 종이, 유리, 금속" },
+                    { day: "토요일", items: "배출 금지" }
+                ],
+                prices: [
+                    { size: "10 리터", price: "250원" },
+                    { size: "20 리터", price: "490원" },
+                    { size: "50 리터", price: "1,250원" }
+                ],
+                link: "https://www.gangnam.go.kr"
+            },
+            seongnam: {
+                schedules: [
+                    { day: "월 / 목", items: "플라스틱, 투명페트, 비닐" },
+                    { day: "화 / 금", items: "종이, 캔, 유리병" },
+                    { day: "수 / 토 / 일", items: "동별 수거 일정 확인 필요" }
+                ],
+                prices: [
+                    { size: "10 리터", price: "240원" },
+                    { size: "20 리터", price: "470원" },
+                    { size: "50 리터", price: "1,200원" }
+                ],
+                link: "https://www.seongnam.go.kr"
+            },
+            busan_haeundae: {
+                schedules: [
+                    { day: "월 / 수", items: "플라스틱, 비닐, 종이" },
+                    { day: "화 / 목", items: "캔, 유리병, 스티로폼" },
+                    { day: "금 / 토 / 일", items: "배출 자제" }
+                ],
+                prices: [
+                    { size: "10 리터", price: "310원" },
+                    { size: "20 리터", price: "620원" },
+                    { size: "50 리터", price: "1,550원" }
+                ],
+                link: "https://www.haeundae.go.kr"
+            }
+        };
+
+        // State Variable
+        let currentActivePresetKey = null;
+
+        // Initialize on DOM Ready
+        window.addEventListener('DOMContentLoaded', () => {
+            renderTrickyItems(trickyItems);
+            updateRegionalInfo();
+            setupDragAndDrop();
+        });
+
+        // Drag and Drop Setup
+        function setupDragAndDrop() {
+            const dropZone = document.getElementById('drop-zone');
+            
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                dropZone.addEventListener(eventName, preventDefaults, false);
+            });
+
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+
+            ['dragenter', 'dragover'].forEach(eventName => {
+                dropZone.addEventListener(eventName, () => dropZone.classList.add('border-brand-500', 'bg-brand-100/50'), false);
+            });
+
+            ['dragleave', 'drop'].forEach(eventName => {
+                dropZone.addEventListener(eventName, () => dropZone.classList.remove('border-brand-500', 'bg-brand-100/50'), false);
+            });
+
+            dropZone.addEventListener('drop', (e) => {
+                const dt = e.dataTransfer;
+                const files = dt.files;
+                if (files.length > 0) {
+                    processFile(files[0]);
+                }
+            });
+        }
+
+        // File Selection Handling
+        function handleFileSelect(e) {
+            const files = e.target.files;
+            if (files.length > 0) {
+                processFile(files[0]);
+            }
+        }
+
+        function processFile(file) {
+            if (!file.type.startsWith('image/')) {
+                alert('이미지 파일만 업로드할 수 있습니다.');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                showPreviewImage(e.target.result);
+                // Trigger AI diagnosis (defaulting to delivery item preset for uploaded user photos)
+                startAIDiagnosis('delivery');
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function showPreviewImage(src) {
+            document.getElementById('upload-placeholder').classList.add('hidden');
+            const previewContainer = document.getElementById('image-preview-container');
+            const previewImage = document.getElementById('uploaded-image');
+            previewImage.src = src;
+            previewContainer.classList.remove('hidden');
+        }
+
+        function resetUpload(e) {
+            if (e) e.stopPropagation();
+            document.getElementById('file-input').value = '';
+            document.getElementById('image-preview-container').classList.add('hidden');
+            document.getElementById('upload-placeholder').classList.remove('hidden');
+            document.getElementById('scanner-line').classList.add('hidden');
+
+            // Reset Result Box
+            document.getElementById('result-content').classList.add('hidden');
+            document.getElementById('result-loading').classList.add('hidden');
+            document.getElementById('result-placeholder').classList.remove('hidden');
+        }
+
+        // Load Sample Presets
+        function loadPreset(key) {
+            currentActivePresetKey = key;
+            const presetData = presets[key];
+
+            // Sample image SVG representations as Data URI
+            const sampleImages = {
+                delivery: 'https://placehold.co/600x400/f1f5f9/16a34a?text=%EB%B0%B0%EB%8B%80%EC%9A%A9%EA%B8%B0+(Plastic)',
+                pet: 'https://placehold.co/600x400/f1f5f9/16a34a?text=%ED%88%AC%EB%AA%85%ED%8D%B8%ED%8A%B8%EB%B3%B1+(PET)',
+                box: 'https://placehold.co/600x400/f1f5f9/16a34a?text=%ED%83%9C%EB%B0%B0%EC%83%81%EC%9E%90+(Paper)',
+                glass: 'https://placehold.co/600x400/f1f5f9/16a34a?text=%EA%B6%A8%EC%A7%84%EC%9C%A0%EB%A6%AC+(Glass)',
+                vinyl: 'https://placehold.co/600x400/f1f5f9/16a34a?text=%EB%B9%84%EB%8B%88%EB%A5%B0+(Vinyl)'
+            };
+
+            showPreviewImage(sampleImages[key]);
+            startAIDiagnosis(key);
+        }
+
+        // AI Scan Trigger Animation
+        function startAIDiagnosis(presetKey) {
+            currentActivePresetKey = presetKey;
+            const preset = presets[presetKey];
+
+            // Show Scanning UI
+            document.getElementById('result-placeholder').classList.add('hidden');
+            document.getElementById('result-content').classList.add('hidden');
+            document.getElementById('result-loading').classList.remove('hidden');
+            document.getElementById('scanner-line').classList.remove('hidden');
+
+            // Simulate 1.2s AI Scan delay
+            setTimeout(() => {
+                document.getElementById('scanner-line').classList.add('hidden');
+                document.getElementById('result-loading').classList.add('hidden');
+
+                if (preset.askContamination) {
+                    // Open contamination question modal
+                    document.getElementById('contamination-modal').classList.remove('hidden');
+                } else {
+                    displayResult(preset, 'default');
+                }
+            }, 1200);
+        }
+
+        // Handle contamination modal selection
+        function submitContaminationChoice(choice) {
+            document.getElementById('contamination-modal').classList.add('hidden');
+            const preset = presets[currentActivePresetKey];
+            displayResult(preset, choice);
+        }
+
+        // Display Final AI Diagnostic Result
+        function displayResult(preset, contaminationChoice) {
+            const resContent = document.getElementById('result-content');
+            resContent.classList.remove('hidden');
+
+            document.getElementById('res-title').innerText = preset.title;
+            document.getElementById('res-badge').innerText = preset.badge;
+
+            // Recyclability Tag logic
+            const tagBox = document.getElementById('res-recyclable-tag');
+            if (contaminationChoice === 'uncleanable' || preset.recyclable === 'no') {
+                tagBox.innerHTML = `<span class="px-3 py-1.5 rounded-xl bg-red-100 text-red-700 font-bold text-xs inline-flex items-center gap-1"><i class="fa-solid fa-trash-can"></i> 일반쓰레기 배출</span>`;
+            } else if (preset.recyclable === 'yes' || contaminationChoice === 'already_clean') {
+                tagBox.innerHTML = `<span class="px-3 py-1.5 rounded-xl bg-brand-100 text-brand-700 font-bold text-xs inline-flex items-center gap-1"><i class="fa-solid fa-leaf"></i> 재활용 가능</span>`;
+            } else {
+                tagBox.innerHTML = `<span class="px-3 py-1.5 rounded-xl bg-amber-100 text-amber-800 font-bold text-xs inline-flex items-center gap-1"><i class="fa-solid fa-soap"></i> 세척 후 재활용</span>`;
+            }
+
+            // Contamination Status Box
+            const contBox = document.getElementById('res-contamination-box');
+            const contTitle = document.getElementById('res-contamination-title');
+            const contDesc = document.getElementById('res-contamination-desc');
+
+            if (contaminationChoice === 'uncleanable') {
+                contBox.className = "p-3.5 rounded-xl bg-red-50 border border-red-200 text-xs text-red-900 flex items-start gap-2.5";
+                contTitle.innerText = "오염도 진단: 세척 불가능 (재활용 불가)";
+                contDesc.innerText = preset.uncleanableContaminationDesc || "오염이 심해 재활용 공정 생성이 어렵습니다. 종량제 봉투로 배출하세요.";
+            } else if (contaminationChoice === 'cleanable') {
+                contBox.className = "p-3.5 rounded-xl bg-amber-50 border border-amber-200 text-xs text-amber-900 flex items-start gap-2.5";
+                contTitle.innerText = "오염도 진단: 세척 필요 (조건부 가능)";
+                contDesc.innerText = preset.cleanableContaminationDesc || "이물질을 완전히 씻어내어 건조 후 배출해야 합니다.";
+            } else {
+                contBox.className = "p-3.5 rounded-xl bg-brand-50 border border-brand-200 text-xs text-brand-900 flex items-start gap-2.5";
+                contTitle.innerText = "오염도 진단: 상태 양호";
+                contDesc.innerText = preset.contaminationDesc;
+            }
+
+            // Steps Rendering
+            const stepsList = document.getElementById('res-steps');
+            stepsList.innerHTML = '';
+
+            let targetSteps = preset.steps;
+            if (contaminationChoice === 'cleanable') targetSteps = preset.cleanableSteps;
+            if (contaminationChoice === 'uncleanable') targetSteps = preset.uncleanableSteps;
+
+            targetSteps.forEach(stepText => {
+                const li = document.createElement('li');
+                li.className = "flex items-start gap-2 bg-white p-2.5 rounded-xl border border-slate-100 shadow-sm";
+                li.innerHTML = `<i class="fa-solid fa-check text-brand-600 mt-0.5 text-xs"></i><span>${stepText}</span>`;
+                stepsList.appendChild(li);
+            });
+
+            // Tip
+            document.getElementById('res-tip').innerText = preset.tip;
+        }
+
+        // Render Tricky Item Search Cards
+        function renderTrickyItems(items) {
+            const grid = document.getElementById('items-grid');
+            grid.innerHTML = '';
+
+            if (items.length === 0) {
+                grid.innerHTML = `<div class="col-span-full text-center py-8 text-eco-muted text-sm">일치하는 품목이 없습니다. 정확한 품목명으로 다시 검색해 주세요.</div>`;
+                return;
+            }
+
+            items.forEach(item => {
+                const card = document.createElement('div');
+                card.className = "bg-white p-4 rounded-2xl border border-brand-100 hover:border-brand-300 hover:shadow-md transition-all space-y-2";
+                
+                let isGeneral = item.category.includes('일반쓰레기');
+                let badgeClass = isGeneral ? "bg-slate-100 text-slate-700" : "bg-brand-100 text-brand-800";
+
+                card.innerHTML = `
+                    <div class="flex items-center justify-between">
+                        <span class="text-2xl">${item.icon}</span>
+                        <span class="px-2 py-0.5 rounded-md text-[11px] font-bold ${badgeClass}">${item.category}</span>
+                    </div>
+                    <h4 class="font-bold text-sm text-eco-darkText mt-1">${item.name}</h4>
+                    <p class="text-xs text-eco-muted leading-relaxed">${item.desc}</p>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Filter search items
+        function filterItems() {
+            const query = document.getElementById('item-search-input').value.trim().toLowerCase();
+            const clearBtn = document.getElementById('search-clear-btn');
+            
+            if (query.length > 0) {
+                clearBtn.classList.remove('hidden');
+            } else {
+                clearBtn.classList.add('hidden');
+            }
+
+            const filtered = trickyItems.filter(item => 
+                item.name.toLowerCase().includes(query) || 
+                item.category.toLowerCase().includes(query) ||
+                item.desc.toLowerCase().includes(query)
+            );
+            renderTrickyItems(filtered);
+        }
+
+        function quickSearch(keyword) {
+            const input = document.getElementById('item-search-input');
+            input.value = keyword;
+            filterItems();
+            document.getElementById('search-section').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function clearSearch() {
+            document.getElementById('item-search-input').value = '';
+            filterItems();
+        }
+
+        // Regional Info Update
+        function updateRegionalInfo() {
+            const key = document.getElementById('region-select').value;
+            const data = regionalData[key];
+
+            // Schedule
+            const scheduleList = document.getElementById('schedule-list');
+            scheduleList.innerHTML = '';
+            data.schedules.forEach(s => {
+                const li = document.createElement('li');
+                li.className = "flex justify-between items-center bg-white p-2.5 rounded-xl border border-slate-100";
+                li.innerHTML = `<span class="font-bold text-eco-darkText">${s.day}</span><span class="text-brand-700 font-semibold">${s.items}</span>`;
+                scheduleList.appendChild(li);
+            });
+
+            // Prices
+            const priceBox = document.getElementById('bag-price-box');
+            priceBox.innerHTML = '';
+            data.prices.forEach(p => {
+                const div = document.createElement('div');
+                div.className = "flex justify-between items-center bg-white p-2.5 rounded-xl border border-slate-100";
+                div.innerHTML = `<span>종량제 봉투 (${p.size})</span><span class="font-bold text-slate-800">${p.price}</span>`;
+                priceBox.appendChild(div);
+            });
+
+            // Link
+            document.getElementById('large-waste-link').href = data.link;
+        }
+
+        // Quiz check
+        function checkQuizAnswer(userChoice) {
+            const resultBox = document.getElementById('quiz-result');
+            resultBox.classList.remove('hidden', 'bg-emerald-50', 'bg-red-50', 'text-emerald-900', 'text-red-900', 'border-emerald-200', 'border-red-200');
+
+            if (userChoice === false) {
+                // Correct Answer
+                resultBox.classList.add('bg-emerald-50', 'text-emerald-900', 'border', 'border-emerald-200');
+                resultBox.innerHTML = `
+                    <p class="font-bold flex items-center gap-1.5 text-emerald-800">
+                        <i class="fa-solid fa-circle-check text-sm"></i> 정답입니다! (+10P 획득)
+                    </p>
+                    <p class="mt-0.5 leading-relaxed">
+                        영수증(감열지)이나 택배 운송장은 혼합 재질 및 화학 약품 처리가 되어 있어 종이 재활용이 불가능합니다. 반드시 <strong>일반쓰레기(종량제 봉투)</strong>로 버려야 합니다.
+                    </p>
+                `;
+            } else {
+                // Incorrect
+                resultBox.classList.add('bg-red-50', 'text-red-900', 'border', 'border-red-200');
+                resultBox.innerHTML = `
+                    <p class="font-bold flex items-center gap-1.5 text-red-800">
+                        <i class="fa-solid fa-triangle-exclamation text-sm"></i> 아쉽네요! 틀렸습니다.
+                    </p>
+                    <p class="mt-0.5 leading-relaxed">
+                        영수증은 약품 처리된 특수 용지이므로 일반 종이류와 함께 재활용할 수 없습니다. 꼭 종량제 봉투로 배출해 주세요.
+                    </p>
+                `;
+            }
+        }
+
+        // Modals Toggle
+        function openGuideModal() {
+            document.getElementById('guide-modal').classList.remove('hidden');
+        }
+
+        function closeGuideModal() {
+            document.getElementById('guide-modal').classList.add('hidden');
+        }
+
+        function scrollToScanner() {
+            document.getElementById('ai-scanner').scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
